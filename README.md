@@ -33,6 +33,12 @@ Available types : `Bool`, `Float`, `Int`, `String`, `Color`, `GameObject`, `Vect
 
 With `[Type]Variable`, you reference the asset only. But with `[Type]Ref` you can either reference the asset file or directly set a value of the given type. In the inspector, you will be able to choose between `Variable Object` or `Direct` : click on the button on the right of the field.
 
+### Timeline
+
+You can add a `GameObject Activation Track` in a Timeline. It allows to active a GameObject stored in a GameObjectVariable. When a `GameObject Activation Clip` is played, it will active the GameObject. When no clip is playing, the GameObject is disable.
+
+![GameObject Activation Track](./_img/gameobjectactivationtrack.png)
+
 ## Events
 
 Events as `.asset` files. To create an event, in the Project Window : `Create > Event`.
@@ -69,6 +75,14 @@ Events as `.asset` files. To create an event, in the Project Window : `Create > 
 - **Rewait Invokers After Trigger** : if true, allows to executed the Actions more than once if the invokers trigger the event again.
 - **Allow Children** : children of the expected invokers work too.
 - **Actions** : what to do when the event is triggered.
+
+### Timeline
+
+You can add an `Event Trigger Track` in a Timeline. Each `Event Trigger Clip` will trigger the specified events when the clip starts or ends.
+
+![Track](./_img/eventtriggertrack.png)
+
+![Clip](./_img/eventtriggerclip.png)
 
 ## Sets
 
