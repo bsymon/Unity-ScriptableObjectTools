@@ -10,22 +10,40 @@ abstract public class Set<T> : ScriptableObject, IEnumerable<T> {
 		get { return set.Count; }
 	}
 	
+	bool lockRemove;
+	public bool LockRemove {
+		get { return lockRemove; }
+		set {
+			lockRemove = value;
+			
+			if(!lockRemove) {
+				for(int i = 0; i < pendingRemove.Count; ++i) {
+					set.Remove(pendingRemove[i]);
+				}
+				
+				pendingRemove.Clear();
+			}
+		}
+	}
+	
 	// -- //
 	
 	[SerializeField] T[] defaultSet;
 	[SerializeField] int capacity;
 	
-	HashSet<T> set = new HashSet<T>();
+	List<T> set = new List<T>();
+	List<T> pendingRemove = new List<T>();
 	
 	// -- //
 	
 	void OnEnable() {
-		if(defaultSet == null) {
-			return;
-		}
+		set.Clear();
+		pendingRemove.Clear();
 		
-		for(int i = 0; i < defaultSet.Length; ++i) {
-			Add(defaultSet[i]);
+		if(defaultSet != null) {
+			for(int i = 0; i < defaultSet.Length; ++i) {
+				Add(defaultSet[i]);
+			}
 		}
 	}
 	
@@ -37,11 +55,34 @@ abstract public class Set<T> : ScriptableObject, IEnumerable<T> {
 			return false;
 		}
 		
-		return set.Add(toAdd);
+		set.Add(toAdd);
+		return true;
+	}
+	
+	public bool SetAt(T toSet, int index) {
+		if(index >= set.Count) {
+			if(capacity == 0) {
+				Add(toSet);
+			} else {
+				return false;
+			}
+		}
+		
+		set[index] = toSet;
+		return true;
 	}
 	
 	public bool Remove(T toDelete) {
+		if(LockRemove) {
+			pendingRemove.Add(toDelete);
+			return true;
+		}
+		
 		return set.Remove(toDelete);
+	}
+	
+	public T GetAt(int index) {
+		return set[index];
 	}
 	
 	// -- //

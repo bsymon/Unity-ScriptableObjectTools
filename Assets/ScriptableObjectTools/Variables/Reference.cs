@@ -1,6 +1,8 @@
-﻿namespace Game.Tools.Variables {
+﻿using UnityEngine;
+
+namespace Game.Tools.Variables {
 	
-public enum Type { VariableObject, Direct }
+public enum Type { Direct, VariableObject }
 
 abstract public class Reference<TVar, TType> where TVar : Variable<TType> {
 	

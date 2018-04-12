@@ -34,3 +34,6 @@ sysinfo.txt
 *.unitypackage
 .vscode/
 UnityPackageManager/
+Assets/_Tests/
+
+Assets/_Tests\.meta

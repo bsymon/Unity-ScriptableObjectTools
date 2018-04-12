@@ -2,7 +2,14 @@
 
 namespace Game.Tools.Variables {
 
-abstract public class Variable<T> : ScriptableObject {
+abstract public class Variable : ScriptableObject {
+	
+	abstract public object GenericValue();
+	abstract public System.Type GetBindingType();
+	
+}
+
+abstract public class Variable<T> : Variable {
 	
 	[SerializeField]
 	[TextArea]
@@ -36,6 +43,14 @@ abstract public class Variable<T> : ScriptableObject {
 	
 	override public string ToString() {
 		return Value.ToString();
+	}
+	
+	sealed override public object GenericValue() {
+		return Value;
+	}
+	
+	sealed override public System.Type GetBindingType() {
+		return typeof(T);
 	}
 	
 	// -- Operators -- //
