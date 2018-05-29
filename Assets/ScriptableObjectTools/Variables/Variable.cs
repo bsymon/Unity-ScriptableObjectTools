@@ -5,6 +5,7 @@ namespace Game.Tools.Variables {
 abstract public class Variable : ScriptableObject {
 	
 	abstract public object GenericValue();
+	abstract public bool GenericValue(object value);
 	abstract public System.Type GetBindingType();
 	
 }
@@ -47,6 +48,15 @@ abstract public class Variable<T> : Variable {
 	
 	sealed override public object GenericValue() {
 		return Value;
+	}
+	
+	sealed override public bool GenericValue(object value) {
+		try {
+			Value = (T) value;
+			return true;
+		} catch(System.InvalidCastException) {
+			return false;
+		}
 	}
 	
 	sealed override public System.Type GetBindingType() {
