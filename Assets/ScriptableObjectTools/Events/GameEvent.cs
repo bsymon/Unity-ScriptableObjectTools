@@ -2,14 +2,8 @@
 
 namespace Game.Tools.Events {
 
-public delegate void EventAction();
-
 [CreateAssetMenu(menuName="Event")]
 public class GameEvent : ScriptableObject {
-	
-	public static GameEvent CurrentEvent { get; private set; }
-	
-	// -- //
 	
 	public GameObject Invoker { get; private set; }
 	
@@ -19,24 +13,35 @@ public class GameEvent : ScriptableObject {
 	[TextArea]
 	string description;
 	
-	EventAction listeners;
+	System.Action listeners;
+	System.Action<GameEvent> listenersWithEvent;
 	
 	// -- //
 	
-	public void AddListener(EventAction listener) {
+	public void AddListener(System.Action listener) {
 		listeners += listener;
 	}
 	
-	public void RemoveListener(EventAction listener) {
+	public void AddListener(System.Action<GameEvent> listener) {
+		listenersWithEvent += listener;
+	}
+	
+	public void RemoveListener(System.Action listener) {
 		listeners -= listener;
 	}
 	
+	public void RemoveListener(System.Action<GameEvent> listener) {
+		listenersWithEvent -= listener;
+	}
+	
 	public void Trigger() {
-		CurrentEvent = this;
 		if(listeners != null) {
-			listeners.Invoke();
+			listeners();
 		}
-		CurrentEvent = null;
+		
+		if(listenersWithEvent != null) {
+			listenersWithEvent(this);
+		}
 	}
 	
 	public void Trigger(GameObject invoker) {
